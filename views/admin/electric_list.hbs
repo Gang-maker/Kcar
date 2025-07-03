@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Korean Cars Admin | Kcarexport</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/images/auto_favi.ico" type="image/x-icon" />
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/f7b393d83e.js" crossorigin="anonymous"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+    
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 8px;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            padding: 1rem;
+        }
+        
+        .admin-container {
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+        
+        .page-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light-gray);
+        }
+        
+        .page-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0 0 1rem 0;
+            position: relative;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .action-buttons .btn {
+            font-weight: 500;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .btn-add {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+        
+        .btn-add:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-admin {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-admin:hover {
+            background: #1a2a3a;
+            transform: translateY(-2px);
+        }
+
+        .btn-view {
+            background: var(--secondary);
+            color: white;
+            border: none;
+        }
+
+        .btn-delete {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+        
+        /* DataTable Customization */
+        .dataTables_wrapper {
+            margin-top: 1rem;
+        }
+        
+        table.dataTable {
+            border-collapse: collapse !important;
+            margin-top: 0 !important;
+            margin-bottom: 1rem !important;
+            width: 100% !important;
+        }
+        
+        table.dataTable thead th {
+            border-bottom: 2px solid var(--primary) !important;
+            font-weight: 600;
+            color: var(--primary);
+            padding: 0.75rem;
+            white-space: nowrap;
+        }
+        
+        table.dataTable tbody td {
+            padding: 0.75rem;
+            vertical-align: middle;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        /* Image Gallery */
+        .car-image-container {
+            position: relative;
+            width: 100px;
+            height: 60px;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0 auto;
+        }
+        
+        .car-image-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .car-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-count-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Status Badges */
+        .badge-success {
+            background-color: #28a745;
+        }
+        
+        .badge-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        /* Action Buttons */
+        .action-btn-group {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .action-btn {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+        
+        /* Modal for Image Gallery */
+        .modal-image {
+            max-height: 70vh;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        
+        /* Responsive Adjustments */
+        @media (min-width: 768px) {
+            body {
+                padding: 2rem;
+            }
+            
+            .admin-container {
+                max-width: 1200px;
+                padding: 2rem;
+            }
+            
+            .page-header {
+                flex-wrap: nowrap;
+                margin-bottom: 2rem;
+            }
+            
+            .page-title {
+                margin: 0;
+            }
+            
+            .action-buttons {
+                margin-bottom: 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .dataTables_wrapper .dataTables_length,
+            .dataTables_wrapper .dataTables_filter {
+                float: none;
+                text-align: left;
+                margin-bottom: 1rem;
+            }
+            
+            table.dataTable thead th,
+            table.dataTable tbody td {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .car-image-container {
+                width: 80px;
+                height: 50px;
+            }
+            
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-container">
+        <div class="page-header">
+            <h1 class="page-title">Korean Cars Inventory</h1>
+            <div class="action-buttons">
+                <a class="btn btn-add" href="addelectric">
+                    <i class="fas fa-plus mr-1"></i> Add Car
+                </a>
+                <a class="btn btn-admin" href="/admin/admin_index">
+                    <i class="fas fa-user-shield mr-1"></i> Admin
+                </a>
+            </div>
+        </div>
+        
+        {{#if external}}
+        <div class="alert alert-info">
+            Showing cars from external API (Autowini). Data is not saved in your database.
+        </div>
+        {{/if}}
+        {{#if error}}
+        <div class="alert alert-danger">
+            {{error}}
+        </div>
+        {{/if}}
+        
+        <!-- DataTable -->
+        <table id="carsTable" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Images</th>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Price</th>
+                    <th>Mileage</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each list}}
+                <tr>
+                    <td>
+                        <div class="car-image-container" data-toggle="modal" data-target="#imageModal{{@index}}">
+                            {{#if this.imagePaths.[0]}}
+                                <img src="{{this.imagePaths.[0]}}" alt="{{this.manufacturer}} {{this.model}}">
+                                {{#if (gt this.imagePaths.length 1)}}
+                                    <span class="image-count-badge">+{{subtract this.imagePaths.length 1}}</span>
+                                {{/if}}
+                            {{else}}
+                                <div style="background:#eee; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+                                    <i class="fas fa-car text-muted"></i>
+                                </div>
+                            {{/if}}
+                        </div>
+                        
+                        <!-- Image Modal -->
+                        <div class="modal fade" id="imageModal{{@index}}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">{{this.manufacturer}} {{this.model}} ({{this.year}})</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <div id="carousel{{@index}}" class="carousel slide" data-ride="carousel">
+                                            <div class="carousel-inner">
+                                                {{#each this.imagePaths}}
+                                                <div class="carousel-item {{#if @first}}active{{/if}}">
+                                                    <img src="{{this}}" class="modal-image" alt="Car Image">
+                                                </div>
+                                                {{/each}}
+                                            </div>
+                                            {{#if (gt this.imagePaths.length 1)}}
+                                            <a class="carousel-control-prev" href="#carousel{{@index}}" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carousel{{@index}}" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{this.manufacturer}}</td>
+                    <td>{{this.model}}</td>
+                    <td>{{this.year}}</td>
+                    <td>${{numberFormat this.price}}</td>
+                    <td>{{numberFormat this.mileage}} km</td>
+                    <td>
+                        <span class="badge {{#if (eq this.carStatus 'Available')}}badge-success{{else}}badge-warning{{/if}}">
+                            {{this.carStatus}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-btn-group">
+                            {{#if ../external}}
+                                <a class="btn btn-view action-btn" href="/electric/booknow/external/{{this.id}}">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            {{else}}
+                                <a class="btn btn-view action-btn" href="/electric/booknow/{{this._id}}">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a class="btn btn-delete action-btn" 
+                                   href="deleteelectric/{{this._id}}"
+                                   onclick="return confirm('Are you sure you want to delete this vehicle?');">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            {{/if}}
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- jQuery, Popper.js, Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+    
+    <script>
+        // Ensure jQuery is loaded first
+        if (typeof jQuery == 'undefined') {
+            document.write('<script src="/local/path/to/jquery.min.js"><\/script>');
+        }
+
+        $(document).ready(function() {
+            // Initialize DataTable with error handling
+            if ($.fn.DataTable) {
+                $('#carsTable').DataTable({
+                    responsive: true,
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search vehicles...",
+                        lengthMenu: "Show _MENU_ vehicles per page",
+                        info: "Showing _START_ to _END_ of _TOTAL_ vehicles",
+                        infoEmpty: "No vehicles found",
+                        infoFiltered: "(filtered from _MAX_ total vehicles)"
+                    },
+                    columnDefs: [
+                        { 
+                            orderable: false, 
+                            targets: [0, 7] 
+                        },
+                        { 
+                            width: "120px", 
+                            targets: [0, 7] 
+                        }
+                    ],
+                    order: [[2, 'asc']],
+                    initComplete: function() {
+                        console.log('DataTable initialized successfully');
+                    }
+                });
+            } else {
+                console.error('DataTables plugin not loaded!');
+                // Fallback to basic table if DataTables fails
+                $('#carsTable').addClass('table').css('width', '100%');
+            }
+
+            // Initialize carousels with error handling
+            $('.modal').on('shown.bs.modal', function() {
+                const $carousel = $(this).find('.carousel');
+                if ($.fn.carousel && $carousel.length) {
+                    $carousel.carousel();
+                }
+            });
+
+            // Add thousand separators to numbers in the table
+            $('td').each(function() {
+                const text = $(this).text();
+                if (/^\$?\d+$/.test(text)) {
+                    $(this).text(text.replace(/\d+/g, function(num) {
+                        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }));
+                }
+            });
+        });
+
+        // Handlebars helper functions (should be in your main layout)
+        if (typeof Handlebars !== 'undefined') {
+            Handlebars.registerHelper('subtract', function(a, b) {
+                return a - b;
+            });
+            
+            Handlebars.registerHelper('gt', function(a, b) {
+                return a > b;
+            });
+            
+            Handlebars.registerHelper('eq', function(a, b) {
+                return a === b;
+            });
+
+            Handlebars.registerHelper('numberFormat', function(number) {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            });
+        }
+    </script>
+</body>
+</html>

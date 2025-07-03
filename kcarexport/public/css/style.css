@@ -1,0 +1,262 @@
+:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --accent: #e74c3c;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --gray: #6c757d;
+    --light-gray: #e9ecef;
+    --border-radius: 8px;
+    --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+
+.car-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.car-subtitle {
+    font-size: 1.3rem;
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+}
+
+/* Carousel Styles */
+.carousel-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2.5rem;
+    background: white;
+    padding: 10px;
+}
+
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+/* Details Section */
+.details-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.price-tag {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+}
+
+.car-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+.car-details-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.car-details-list li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.car-details-list svg {
+    margin-right: 1rem;
+    color: var(--secondary);
+    min-width: 24px;
+    font-size: 1.2rem;
+}
+
+.car-details-list b {
+    margin-right: 0.5rem;
+    color: var(--primary);
+    min-width: 100px;
+    display: inline-block;
+}
+
+/* Options Section */
+.options-section {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.options-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.options-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--secondary);
+}
+
+.badge-option {
+    background: var(--secondary);
+    color: white;
+    margin: 0 0.5rem 0.5rem 0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-block;
+    transition: var(--transition);
+}
+
+.badge-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* Button Styles */
+.btn-order {
+    background: var(--accent);
+    color: white;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition);
+    border: none;
+    display: inline-block;
+    margin-top: 1rem;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-order:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(231, 76, 60, 0.4);
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: var(--border-radius);
+    border: none;
+}
+
+.modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.modal-title {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.modal-body {
+    padding-top: 0;
+}
+
+.form-control {
+    border-radius: var(--border-radius);
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--light-gray);
+}
+
+.form-control:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.6rem 1.5rem;
+    transition: var(--transition);
+}
+
+.btn-secondary:hover {
+    background: #2980b9;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .car-title {
+        font-size: 1.8rem;
+    }
+    
+    .car-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .carousel-item img {
+        height: 300px;
+    }
+    
+    .price-tag {
+        font-size: 1.8rem;
+    }
+    
+    .car-details-list b {
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-item img {
+        height: 250px;
+    }
+    
+    .details-card, .options-section {
+        padding: 1.5rem;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animated-section {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
